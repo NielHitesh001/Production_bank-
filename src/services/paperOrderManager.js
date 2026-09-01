@@ -1,11 +1,11 @@
 import crypto from "node:crypto";
 
 export class PaperOrderManager {
-  constructor({ limit = 100000, threshold = 50000 } = {}) { this.limit = limit; this.threshold = threshold; this.reserved = 0; this.orders = new Map(); this.killSwitch = false; this.version = 1; }
-  engageKillSwitch(reason = "operator") { this.killSwitch = true; return { engaged: true, reason }; }
+  constructor({ limit = 100000, threshold = 50000, audit = () => {} } = {}) { this.limit = limit; this.threshold = threshold; this.audit = audit; this.reserved = 0; this.orders = new Map(); this.killSwitch = false; this.version = 1; }
+  engageKillSwitch(reason = "operator", actorId = "unknown", entityId = "global") { this.killSwitch = true; const event = { action: "KillSwitchEngaged", actorId, entityId, reason, timestamp: new Date().toISOString() }; this.audit(event); return { engaged: true, reason }; }
   clearKillSwitch() { this.killSwitch = false; }
   accept(command) {
-    if (this.killSwitch) return { status: "rejected", reason: "kill_switch_active" };
+    if (this.killSwitch) { const event = { action: "OrderDeniedKillSwitch", actorId: command?.actorId || "unknown", entityId: command?.entityId || "global", clientRequestId: command?.clientRequestId, timestamp: new Date().toISOString() }; this.audit(event); return { status: "rejected", reason: "kill_switch_active" }; }
     if (!command?.clientRequestId) return { status: "rejected", reason: "idempotency_key_required" };
     if (this.orders.has(command.clientRequestId)) return this.orders.get(command.clientRequestId);
     const amount = Number(command.notional || 0);

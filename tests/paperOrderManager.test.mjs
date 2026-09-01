@@ -12,6 +12,9 @@ test("paper order acceptance is idempotent and reserves against a versioned limi
 });
 
 test("kill switch blocks an actual submission attempt", () => {
-  const manager = new PaperOrderManager(); manager.engageKillSwitch();
-  assert.equal(manager.accept({ clientRequestId: "blocked", notional: 1 }).reason, "kill_switch_active");
+  const events = []; const manager = new PaperOrderManager({ audit: (event) => events.push({ ...event, chain_sequence: events.length + 1 }) }); manager.engageKillSwitch("incident", "U1", "E1");
+  assert.equal(manager.accept({ clientRequestId: "blocked", notional: 1, actorId: "U2", entityId: "E1" }).reason, "kill_switch_active");
+  assert.deepEqual(events.map((e) => e.action), ["KillSwitchEngaged", "OrderDeniedKillSwitch"]);
+  assert.deepEqual(events.map((e) => e.chain_sequence), [1, 2]);
+  assert.equal(events[0].actorId, "U1"); assert.equal(events[1].entityId, "E1");
 });
