@@ -14,6 +14,7 @@ class DatabaseClient {
   }
 
   async initialize() {
+    this.dbUrl = process.env.DATABASE_URL || this.dbUrl;
     if (this.dbUrl && this.dbUrl.startsWith("postgres")) {
       try {
         // Dynamic import of pg if available
@@ -67,6 +68,17 @@ class DatabaseClient {
       }
     }
     return false;
+  }
+
+  async appendAuditEvent({ actorId, actorRole, action, resourceType, resourceId, requestId, payload = {} }) {
+    if (this.isPgConnected && this.pgPool) {
+      const result = await this.pgPool.query(
+        "SELECT append_audit_event($1,$2,$3,$4,$5,$6,$7) AS chain_sequence",
+        [actorId, actorRole, action, resourceType, resourceId, requestId, payload],
+      );
+      return Number(result.rows[0].chain_sequence);
+    }
+    return null;
   }
 
   async getHealth() {

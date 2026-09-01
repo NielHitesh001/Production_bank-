@@ -28,7 +28,8 @@ function loadEnv() {
         if (!trimmed || trimmed.startsWith("#")) continue;
         const [k, ...v] = trimmed.split("=");
         if (k && v) {
-          process.env[k.trim()] = v.join("=").trim();
+          const key = k.trim();
+          if (process.env[key] === undefined) process.env[key] = v.join("=").trim();
         }
       }
     }
@@ -103,7 +104,17 @@ function readEntitlement(req) {
   try { return JSON.parse(req.headers["x-entitlement-snapshot"] || "null"); } catch { return null; }
 }
 
-function appendReadAudit(event, req, details = {}) {
+async function appendReadAudit(event, req, details = {}) {
+  const pgSequence = await dbClient.appendAuditEvent({
+    actorId: req.headers["x-subject-id"] || "unknown",
+    actorRole: req.headers["x-role"] || "Analyst",
+    action: event,
+    resourceType: "read_model",
+    resourceId: details.resourceId || event,
+    requestId: req.headers["x-request-id"] || crypto.randomUUID(),
+    payload: details,
+  }).catch(() => null);
+  if (pgSequence !== null) return pgSequence;
   db.immutableAuditLogs = db.immutableAuditLogs || [];
   const previousHash = db.immutableAuditLogs.at(-1)?.hash || "0".repeat(64);
   const sequence = db.immutableAuditLogs.length + 1;
@@ -260,7 +271,7 @@ const server = http.createServer(async (req, res) => {
       const role = req.headers["x-role"] || "Analyst";
       const now = Date.now();
       const tickers = wsMarketManager.getAllTickers().map((ticker) => ({ ...maskForRole(ticker, role), freshness: freshnessState({ watermarkAt: ticker.timestamp, now }) }));
-      appendReadAudit("market_data.read", req, { scope: "market:read", count: tickers.length });
+      await appendReadAudit("market_data.read", req, { scope: "market:read", count: tickers.length });
       sendJson(res, 200, { entitlementVersion: ENTITLEMENT_VERSION, serverWatermark: new Date(now).toISOString(), tickers });
       return;
     }
@@ -276,7 +287,7 @@ const server = http.createServer(async (req, res) => {
       const filtered = query ? rows.filter((row) => JSON.stringify(row).toLowerCase().includes(query.toLowerCase())) : rows;
       const role = req.headers["x-role"] || "Analyst";
       const result = buildResearchResult(filtered.map((row) => maskForRole(row, role)), { limit, query });
-      appendReadAudit("research.query", req, { scope: "research:read", query, count: result.rows.length });
+      await appendReadAudit("research.query", req, { scope: "research:read", query, count: result.rows.length });
       sendJson(res, 200, result);
       return;
     }
@@ -745,6 +756,7 @@ const server = http.createServer(async (req, res) => {
 const isDirectExecution = process.argv[1] && process.argv[1].endsWith("server.mjs");
 
 if (isDirectExecution) {
+  await dbClient.initialize();
   server.listen(PORT, "127.0.0.1", () => {
     console.log(`MoneyTrace & World Money Backend API running on http://127.0.0.1:${PORT}`);
   });
