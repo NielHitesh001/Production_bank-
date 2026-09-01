@@ -24,6 +24,9 @@ test("wmt_app can append audit events but cannot delete them", { skip: !database
     const first = await app.query("SELECT append_audit_event($1,$2,$3,$4,$5,$6,$7) AS chain_sequence", ["integration-test", "Analyst", "market_data.read", "read_model", "market", "22222222-2222-2222-2222-222222222222", { scope: "market:read" }]);
     const second = await app.query("SELECT append_audit_event($1,$2,$3,$4,$5,$6,$7) AS chain_sequence", ["integration-test", "Analyst", "research.query", "read_model", "research", "33333333-3333-3333-3333-333333333333", { scope: "research:read" }]);
     assert.equal(Number(second.rows[0].chain_sequence), Number(first.rows[0].chain_sequence) + 1, "read audit events must be contiguous in the append-only chain");
+    const kill = await app.query("SELECT append_audit_event($1,$2,$3,$4,$5,$6,$7) AS chain_sequence", ["operator-1", "Admin", "KillSwitchEngaged", "risk_control", "entity-1", "44444444-4444-4444-4444-444444444444", { reason: "incident" }]);
+    const denied = await app.query("SELECT append_audit_event($1,$2,$3,$4,$5,$6,$7) AS chain_sequence", ["analyst-1", "Analyst", "OrderDeniedKillSwitch", "order", "order-1", "55555555-5555-5555-5555-555555555555", { entityId: "entity-1" }]);
+    assert.equal(Number(denied.rows[0].chain_sequence), Number(kill.rows[0].chain_sequence) + 1, "kill-switch events must remain contiguous in the append-only chain");
   } finally {
     await app.end();
     await owner.end();
