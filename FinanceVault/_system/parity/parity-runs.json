@@ -1,0 +1,77 @@
+[
+  {
+    "runAt": "2026-09-01T06:18:43.051Z",
+    "durationMs": 5,
+    "trigger": {
+      "triggered": false,
+      "reason": "external_export_mechanism_not_configured"
+    },
+    "exportRevision": "2026-09-01 06:18 UTC",
+    "exportFileHash": "bd25c93b75d3c4178562c891f898793f9a492a22e124c50e1c68f178e728c854",
+    "snapshotTimestamp": "2026-09-01T06:18:00.000Z",
+    "ledgerWatermark": "2026-08-29T06:38:43.214Z",
+    "sourceGapMs": 257956786,
+    "eligible": false,
+    "resultState": "unavailable"
+  },
+  {
+    "runAt": "2026-09-01T06:18:43.219Z",
+    "durationMs": 4,
+    "trigger": {
+      "triggered": false,
+      "reason": "external_export_mechanism_not_configured"
+    },
+    "exportRevision": "2026-09-01 06:18 UTC",
+    "exportFileHash": "bd25c93b75d3c4178562c891f898793f9a492a22e124c50e1c68f178e728c854",
+    "snapshotTimestamp": "2026-09-01T06:18:00.000Z",
+    "ledgerWatermark": "2026-08-29T06:38:43.214Z",
+    "sourceGapMs": 257956786,
+    "eligible": false,
+    "resultState": "unavailable"
+  },
+  {
+    "runAt": "2026-09-01T06:18:43.428Z",
+    "durationMs": 5,
+    "trigger": {
+      "triggered": false,
+      "reason": "external_export_mechanism_not_configured"
+    },
+    "exportRevision": "2026-09-01 06:18 UTC",
+    "exportFileHash": "bd25c93b75d3c4178562c891f898793f9a492a22e124c50e1c68f178e728c854",
+    "snapshotTimestamp": "2026-09-01T06:18:00.000Z",
+    "ledgerWatermark": "2026-08-29T06:38:43.214Z",
+    "sourceGapMs": 257956786,
+    "eligible": false,
+    "resultState": "unavailable"
+  },
+  {
+    "runAt": "2026-09-01T06:18:43.608Z",
+    "durationMs": 4,
+    "trigger": {
+      "triggered": false,
+      "reason": "external_export_mechanism_not_configured"
+    },
+    "exportRevision": "2026-09-01 06:18 UTC",
+    "exportFileHash": "bd25c93b75d3c4178562c891f898793f9a492a22e124c50e1c68f178e728c854",
+    "snapshotTimestamp": "2026-09-01T06:18:00.000Z",
+    "ledgerWatermark": "2026-08-29T06:38:43.214Z",
+    "sourceGapMs": 257956786,
+    "eligible": false,
+    "resultState": "unavailable"
+  },
+  {
+    "runAt": "2026-09-01T06:18:43.779Z",
+    "durationMs": 4,
+    "trigger": {
+      "triggered": false,
+      "reason": "external_export_mechanism_not_configured"
+    },
+    "exportRevision": "2026-09-01 06:18 UTC",
+    "exportFileHash": "bd25c93b75d3c4178562c891f898793f9a492a22e124c50e1c68f178e728c854",
+    "snapshotTimestamp": "2026-09-01T06:18:00.000Z",
+    "ledgerWatermark": "2026-08-29T06:38:43.214Z",
+    "sourceGapMs": 257956786,
+    "eligible": false,
+    "resultState": "unavailable"
+  }
+]
