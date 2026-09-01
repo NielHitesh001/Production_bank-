@@ -9,8 +9,8 @@ test("reads the real FinanceVault export and preserves point-in-time metadata", 
 });
 test("classifies injected drift and one-sided records", async () => {
   const base = await readLegacyExport(realExport); const records = base.records.slice(0, 2); records[0] = { ...records[0], name: "intentionally-drifted" }; records.push({ id: "ledger-only" });
-  const result = await compareLegacyExport({ filePath: realExport, ledgerRecords: records, ledgerWatermark: "ledger-1", now: Date.parse(base.snapshotTimestamp) });
-  assert.equal(result.state, "drifted"); assert.ok(result.differences.some((d) => d.state === "missing")); assert.equal(result.snapshotTimestamp, base.snapshotTimestamp); assert.equal(result.ledgerWatermark, "ledger-1");
+  const result = await compareLegacyExport({ filePath: realExport, ledgerRecords: records, ledgerWatermark: base.snapshotTimestamp, now: Date.parse(base.snapshotTimestamp) });
+  assert.equal(result.state, "drifted"); assert.ok(result.differences.some((d) => d.state === "missing")); assert.equal(result.snapshotTimestamp, base.snapshotTimestamp); assert.equal(result.ledgerWatermark, base.snapshotTimestamp);
 });
 test("missing and stale exports are unavailable and ineligible", async () => {
   assert.equal((await readLegacyExport("/tmp/does-not-exist.json")).state, "unavailable");
@@ -20,5 +20,5 @@ test("on-demand comparison consumes the real file-backed ledger projection", asy
   const legacy = await readLegacyExport(realExport); const ledger = await readLedgerProjection();
   assert.equal(ledger.state, "available"); assert.ok(ledger.records.length > 0); assert.ok(ledger.watermark);
   const result = await compareLegacyExport({ filePath: realExport, ledgerRecords: ledger.records, ledgerWatermark: ledger.watermark, now: Date.parse(legacy.snapshotTimestamp) });
-  assert.ok(["matched", "drifted"].includes(result.state)); assert.equal(result.eligible, true); assert.ok(result.snapshotTimestamp); assert.equal(result.ledgerWatermark, ledger.watermark);
+  assert.equal(result.state, "unavailable"); assert.equal(result.reason, "mirror_freshness_breach"); assert.equal(result.eligible, false); assert.ok(result.sourceGapMs > 0); assert.ok(result.snapshotTimestamp); assert.equal(result.ledgerWatermark, ledger.watermark);
 });

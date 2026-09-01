@@ -32,11 +32,13 @@ export async function compareLegacyExport({ filePath, ledgerRecords = [], ledger
   const legacy = await readLegacyExport(filePath);
   if (legacy.state !== "available") return legacy;
   const freshness = freshnessState({ watermarkAt: legacy.snapshotTimestamp, now, staleAfterMs: LEGACY_MAX_AGE_MS });
-  if (freshness.state === "stale" || freshness.state === "unavailable") { emitAudit?.({ action: "MirrorFreshnessBreach", payload: { snapshotTimestamp: legacy.snapshotTimestamp, ageMs: freshness.ageMs } }); return { state: "unavailable", reason: "mirror_freshness_breach", eligible: false, snapshotTimestamp: legacy.snapshotTimestamp, ledgerWatermark }; }
+  const snapshotMs = Date.parse(legacy.snapshotTimestamp); const ledgerMs = Date.parse(ledgerWatermark || "");
+  const sourceGapMs = Number.isFinite(ledgerMs) ? Math.abs(snapshotMs - ledgerMs) : Infinity;
+  if (freshness.state === "stale" || freshness.state === "unavailable" || sourceGapMs > LEGACY_MAX_AGE_MS) { emitAudit?.({ action: "MirrorFreshnessBreach", payload: { snapshotTimestamp: legacy.snapshotTimestamp, ledgerWatermark, ageMs: freshness.ageMs, sourceGapMs } }); return { state: "unavailable", reason: "mirror_freshness_breach", eligible: false, snapshotTimestamp: legacy.snapshotTimestamp, ledgerWatermark, sourceGapMs }; }
   const left = new Map(legacy.records.map((r) => [r.id, r])); const right = new Map((ledgerRecords || []).map((r) => [r.id, r])); const differences = [];
   for (const [id, record] of left) if (!right.has(id)) differences.push({ id, state: "missing", source: "legacy" }); else if (JSON.stringify(record) !== JSON.stringify(right.get(id))) differences.push({ id, state: "drifted" });
   for (const id of right.keys()) if (!left.has(id)) differences.push({ id, state: "missing", source: "ledger" });
   const state = differences.length ? "drifted" : "matched";
   emitAudit?.({ action: state === "matched" ? "ParityClean" : "ParityBreak", payload: { revision: legacy.revision, snapshotTimestamp: legacy.snapshotTimestamp, ledgerWatermark, differenceCount: differences.length } });
-  return { state, eligible: true, revision: legacy.revision, snapshotTimestamp: legacy.snapshotTimestamp, ledgerWatermark, differences };
+  return { state, eligible: true, revision: legacy.revision, snapshotTimestamp: legacy.snapshotTimestamp, ledgerWatermark, sourceGapMs, differences };
 }
