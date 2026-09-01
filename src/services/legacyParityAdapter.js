@@ -1,6 +1,8 @@
 import fs from "node:fs/promises";
 import crypto from "node:crypto";
 import { freshnessState } from "./readOnlyIntelligence.js";
+import path from "node:path";
+import { getEntities } from "./intelligenceService.js";
 
 export const LEGACY_MAX_AGE_MS = 15 * 60 * 1000 + 60 * 1000;
 
@@ -12,6 +14,18 @@ export async function readLegacyExport(filePath) {
     if (!document || !document.generated_at || !Array.isArray(document.nodes)) return { state: "unavailable", reason: "export_malformed" };
     return { state: "available", revision: document.revision ?? document.generated_at, snapshotTimestamp: new Date(document.generated_at).toISOString(), fileHash: crypto.createHash("sha256").update(raw).digest("hex"), records: document.nodes.map((node) => ({ id: node.id, name: node.legal_name || node.name, jurisdiction: node.jurisdiction })) };
   } catch { return { state: "unavailable", reason: "export_malformed" }; }
+}
+
+export async function readLedgerProjection(filePath = path.resolve("data/entities_large.json")) {
+  try {
+    const raw = await fs.readFile(filePath, "utf8");
+    const rows = JSON.parse(raw);
+    if (!Array.isArray(rows)) return { state: "unavailable", reason: "ledger_projection_malformed" };
+    return { state: "available", watermark: new Date((await fs.stat(filePath)).mtimeMs).toISOString(), records: rows.map((row) => ({ id: row.id, name: row.legalName || row.name, jurisdiction: row.countryCode || row.country })) };
+  } catch {
+    const rows = getEntities();
+    return rows?.length ? { state: "available", watermark: new Date().toISOString(), records: rows.map((row) => ({ id: row.id, name: row.name, jurisdiction: row.countryCode || row.country })) } : { state: "unavailable", reason: "ledger_projection_unavailable" };
+  }
 }
 
 export async function compareLegacyExport({ filePath, ledgerRecords = [], ledgerWatermark, now = Date.now(), emitAudit } = {}) {
