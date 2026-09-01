@@ -50,7 +50,7 @@ function loadSavedViews() {
   }
 }
 
-export default function Dashboard() {
+export default function FinancialIntelligencePlatform() {
   const [activeTab, setActiveTab] = useState("terminal"); // "terminal" | "liquidity" | "investigate"
   const [liquiditySubView, setLiquiditySubView] = useState("macro"); // "macro" | "rails" | "centralbanks" | "converter" | "network"
   const [investigationViewMode, setInvestigationViewMode] = useState("graph"); // "graph" | "blotter"
@@ -422,7 +422,7 @@ export default function Dashboard() {
         <div className="brand">
           <span className="brand-glyph">W</span>
           <span>WorldMoney</span>
-          <small>INSTITUTIONAL TERMINAL</small>
+          <small>FINANCIAL INTELLIGENCE</small>
         </div>
         <nav>
           <button

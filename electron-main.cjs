@@ -10,7 +10,7 @@ function createWindow() {
     minWidth: 1280,
     minHeight: 720,
     backgroundColor: '#050505',
-    title: 'World Money Terminal',
+    title: 'World Money — Financial Intelligence',
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
