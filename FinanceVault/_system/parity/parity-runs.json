@@ -73,5 +73,19 @@
     "sourceGapMs": 257956786,
     "eligible": false,
     "resultState": "unavailable"
+  },
+  {
+    "runAt": "2026-09-01T06:21:35.532Z",
+    "durationMs": 335,
+    "trigger": {
+      "triggered": true
+    },
+    "exportRevision": "2026-09-01 06:21 UTC",
+    "exportFileHash": "632c4f9d48de210114564a2a04417039a7e58a282cc487714276f7fb61a2296b",
+    "snapshotTimestamp": "2026-09-01T06:21:00.000Z",
+    "ledgerWatermark": "2026-08-29T06:38:43.214Z",
+    "sourceGapMs": 258136786,
+    "eligible": false,
+    "resultState": "unavailable"
   }
 ]

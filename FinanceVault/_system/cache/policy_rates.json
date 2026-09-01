@@ -3,33 +3,33 @@
     "USA": {
       "policy_rate": 3.63,
       "policy_rate_source": "FRED DFF",
-      "policy_rate_as_of": "2026-08-27"
+      "policy_rate_as_of": "2026-08-28"
     },
     "DEU": {
       "policy_rate": 2.25,
       "policy_rate_source": "FRED ECBDFR",
-      "policy_rate_as_of": "2026-08-28"
+      "policy_rate_as_of": "2026-08-31"
     },
     "FRA": {
       "policy_rate": 2.25,
       "policy_rate_source": "FRED ECBDFR",
-      "policy_rate_as_of": "2026-08-28"
+      "policy_rate_as_of": "2026-08-31"
     },
     "ITA": {
       "policy_rate": 2.25,
       "policy_rate_source": "FRED ECBDFR",
-      "policy_rate_as_of": "2026-08-28"
+      "policy_rate_as_of": "2026-08-31"
     },
     "ESP": {
       "policy_rate": 2.25,
       "policy_rate_source": "FRED ECBDFR",
-      "policy_rate_as_of": "2026-08-28"
+      "policy_rate_as_of": "2026-08-31"
     },
     "NLD": {
       "policy_rate": 2.25,
       "policy_rate_source": "FRED ECBDFR",
-      "policy_rate_as_of": "2026-08-28"
+      "policy_rate_as_of": "2026-08-31"
     }
   },
-  "fetched_at": "2026-08-31 08:26 UTC"
+  "fetched_at": "2026-09-01 02:55 UTC"
 }

@@ -1,30 +1,27 @@
 ---
 type: "central-bank"
 country: "CHL"
-code: "N/A"
-established: "unknown"
+code: "BCCh"
+established: 1925
 policy_rate_source: "curated/manual"
 policy_rate_as_of: "N/A"
 tags:
   - finance/central-bank
-data_quality: "auto-stub"
-last_updated: "2026-08-31 08:26 UTC"
+data_quality: "curated"
+last_updated: "2026-09-01 06:21 UTC"
 ---
-# 🏛️ Central Bank of Chile
-
-> [!warning] Auto-generated stub
-> This entity has not been manually curated yet. Policy rate and mandate are placeholders — extend `CURATED_CENTRAL_BANKS` in the daemon to enrich it.
+# 🏛️ Banco Central de Chile
 
 ## 📊 Policy Snapshot
 <!-- LIVE:POLICY-RATE:START -->
 | Metric | Value |
 |---|---|
-| Policy Rate | `N/A%` |
+| Policy Rate | `5.5%` |
 | Rate Source | curated/manual |
 | Rate As Of | N/A |
-| Mandate | Not yet catalogued |
-| CBDC Status | Not yet catalogued |
-| Data quality | 🟡 auto-stub — needs enrichment |
+| Mandate | Currency stability (3% inflation target) & payment safety |
+| CBDC Status | Exploration & technical assessment |
+| Data quality | 🟢 curated |
 <!-- LIVE:POLICY-RATE:END -->
 
 ## 🔗 Graph Context

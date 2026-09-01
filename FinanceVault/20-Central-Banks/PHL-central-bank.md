@@ -1,30 +1,27 @@
 ---
 type: "central-bank"
 country: "PHL"
-code: "N/A"
-established: "unknown"
+code: "BSP"
+established: 1993
 policy_rate_source: "curated/manual"
 policy_rate_as_of: "N/A"
 tags:
   - finance/central-bank
-data_quality: "auto-stub"
-last_updated: "2026-08-31 08:26 UTC"
+data_quality: "curated"
+last_updated: "2026-09-01 06:21 UTC"
 ---
-# 🏛️ Central Bank of Philippines
-
-> [!warning] Auto-generated stub
-> This entity has not been manually curated yet. Policy rate and mandate are placeholders — extend `CURATED_CENTRAL_BANKS` in the daemon to enrich it.
+# 🏛️ Bangko Sentral ng Pilipinas
 
 ## 📊 Policy Snapshot
 <!-- LIVE:POLICY-RATE:START -->
 | Metric | Value |
 |---|---|
-| Policy Rate | `N/A%` |
+| Policy Rate | `6.25%` |
 | Rate Source | curated/manual |
 | Rate As Of | N/A |
-| Mandate | Not yet catalogued |
-| CBDC Status | Not yet catalogued |
-| Data quality | 🟡 auto-stub — needs enrichment |
+| Mandate | Price stability (2-4% target) & financial system health |
+| CBDC Status | Project Agila — wholesale pilot |
+| Data quality | 🟢 curated |
 <!-- LIVE:POLICY-RATE:END -->
 
 ## 🔗 Graph Context

@@ -1,30 +1,27 @@
 ---
 type: "central-bank"
 country: "THA"
-code: "N/A"
-established: "unknown"
+code: "BOT"
+established: 1942
 policy_rate_source: "curated/manual"
 policy_rate_as_of: "N/A"
 tags:
   - finance/central-bank
-data_quality: "auto-stub"
-last_updated: "2026-08-31 08:26 UTC"
+data_quality: "curated"
+last_updated: "2026-09-01 06:21 UTC"
 ---
-# 🏛️ Central Bank of Thailand
-
-> [!warning] Auto-generated stub
-> This entity has not been manually curated yet. Policy rate and mandate are placeholders — extend `CURATED_CENTRAL_BANKS` in the daemon to enrich it.
+# 🏛️ Bank of Thailand
 
 ## 📊 Policy Snapshot
 <!-- LIVE:POLICY-RATE:START -->
 | Metric | Value |
 |---|---|
-| Policy Rate | `N/A%` |
+| Policy Rate | `2.5%` |
 | Rate Source | curated/manual |
 | Rate As Of | N/A |
-| Mandate | Not yet catalogued |
-| CBDC Status | Not yet catalogued |
-| Data quality | 🟡 auto-stub — needs enrichment |
+| Mandate | Price stability (1-3% target) & economic growth |
+| CBDC Status | Retail CBDC pilot completed |
+| Data quality | 🟢 curated |
 <!-- LIVE:POLICY-RATE:END -->
 
 ## 🔗 Graph Context

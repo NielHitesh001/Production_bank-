@@ -6,7 +6,7 @@ currency_symbol: "\u20b5"
 country_count: 1
 tags:
   - finance/currency
-last_updated: "2026-08-31 09:58 UTC"
+last_updated: "2026-09-01 06:28 UTC"
 ---
 # Ghanaian cedi (GHS) Currency Hub
 
@@ -16,7 +16,7 @@ last_updated: "2026-08-31 09:58 UTC"
 |---|---|
 | USD -> GHS | `N/A` |
 | Source | ECB reference rate (via frankfurter.app) |
-| As of | 2026-08-28 |
+| As of | 2026-08-31 |
 <!-- LIVE:FXRATE:END -->
 
 ## Countries Using GHS

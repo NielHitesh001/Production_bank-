@@ -3,12 +3,12 @@ type: "central-bank"
 country: "FRA"
 code: "BDF"
 established: 1800
-policy_rate_source: "FRED ECBDFR"
-policy_rate_as_of: "2026-08-28"
+policy_rate_source: "curated/manual"
+policy_rate_as_of: "N/A"
 tags:
   - finance/central-bank
 data_quality: "curated"
-last_updated: "2026-08-31 08:26 UTC"
+last_updated: "2026-09-01 06:21 UTC"
 ---
 # 🏛️ Banque de France
 
@@ -16,9 +16,9 @@ last_updated: "2026-08-31 08:26 UTC"
 <!-- LIVE:POLICY-RATE:START -->
 | Metric | Value |
 |---|---|
-| Policy Rate | `2.25%` |
-| Rate Source | FRED ECBDFR |
-| Rate As Of | 2026-08-28 |
+| Policy Rate | `3.65%` |
+| Rate Source | curated/manual |
+| Rate As Of | N/A |
 | Mandate | Price stability within Eurosystem (ECB-aligned) |
 | CBDC Status | Digital Euro — Eurosystem project |
 | Data quality | 🟢 curated |

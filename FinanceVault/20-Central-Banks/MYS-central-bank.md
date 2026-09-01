@@ -1,30 +1,27 @@
 ---
 type: "central-bank"
 country: "MYS"
-code: "N/A"
-established: "unknown"
+code: "BNM"
+established: 1959
 policy_rate_source: "curated/manual"
 policy_rate_as_of: "N/A"
 tags:
   - finance/central-bank
-data_quality: "auto-stub"
-last_updated: "2026-08-31 08:26 UTC"
+data_quality: "curated"
+last_updated: "2026-09-01 06:21 UTC"
 ---
-# 🏛️ Central Bank of Malaysia
-
-> [!warning] Auto-generated stub
-> This entity has not been manually curated yet. Policy rate and mandate are placeholders — extend `CURATED_CENTRAL_BANKS` in the daemon to enrich it.
+# 🏛️ Bank Negara Malaysia
 
 ## 📊 Policy Snapshot
 <!-- LIVE:POLICY-RATE:START -->
 | Metric | Value |
 |---|---|
-| Policy Rate | `N/A%` |
+| Policy Rate | `3.0%` |
 | Rate Source | curated/manual |
 | Rate As Of | N/A |
-| Mandate | Not yet catalogued |
-| CBDC Status | Not yet catalogued |
-| Data quality | 🟡 auto-stub — needs enrichment |
+| Mandate | Monetary & financial stability conducive to sustainable growth |
+| CBDC Status | Project Dunbar — wholesale exploration |
+| Data quality | 🟢 curated |
 <!-- LIVE:POLICY-RATE:END -->
 
 ## 🔗 Graph Context

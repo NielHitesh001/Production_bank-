@@ -5,7 +5,7 @@ rail_type: "Instant payment (retail & wholesale)"
 operator: "Australian Payments Plus / RBA"
 tags:
   - finance/payment-rail
-last_updated: "2026-08-28 21:58 UTC"
+last_updated: "2026-09-01 06:21 UTC"
 ---
 # 🔌 New Payments Platform (NPP / PayID) (NPP)
 
@@ -15,7 +15,7 @@ last_updated: "2026-08-28 21:58 UTC"
 |---|---|
 | Status | 🟢 OPEN |
 | Operating window | 24/7 |
-| Checked at | 2026-08-28 21:58 UTC |
+| Checked at | 2026-09-01 06:21 UTC |
 <!-- LIVE:STATUS:END -->
 
 ## ℹ️ Overview

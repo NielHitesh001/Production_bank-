@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-31 10:12 UTC",
+  "generated_at": "2026-09-01 06:35 UTC",
   "links": [
     {
       "source": "country:AFG",
@@ -6386,7 +6386,7 @@
     {
       "attributes": {
         "country_count": 4,
-        "usd_rate": 1.3899
+        "usd_rate": 1.3963
       },
       "data_quality": "source",
       "id": "currency:AUD",
@@ -6476,7 +6476,7 @@
     {
       "attributes": {
         "country_count": 1,
-        "usd_rate": 5.1641
+        "usd_rate": 5.1718
       },
       "data_quality": "source",
       "id": "currency:BRL",
@@ -6536,7 +6536,7 @@
     {
       "attributes": {
         "country_count": 1,
-        "usd_rate": 1.3854
+        "usd_rate": 1.3886
       },
       "data_quality": "source",
       "id": "currency:CAD",
@@ -6556,7 +6556,7 @@
     {
       "attributes": {
         "country_count": 2,
-        "usd_rate": 0.80426
+        "usd_rate": 0.80855
       },
       "data_quality": "source",
       "id": "currency:CHF",
@@ -6576,7 +6576,7 @@
     {
       "attributes": {
         "country_count": 1,
-        "usd_rate": 6.7209
+        "usd_rate": 6.7197
       },
       "data_quality": "source",
       "id": "currency:CNY",
@@ -6626,7 +6626,7 @@
     {
       "attributes": {
         "country_count": 1,
-        "usd_rate": 20.74
+        "usd_rate": 20.802
       },
       "data_quality": "source",
       "id": "currency:CZK",
@@ -6646,7 +6646,7 @@
     {
       "attributes": {
         "country_count": 1,
-        "usd_rate": 6.42
+        "usd_rate": 6.4463
       },
       "data_quality": "source",
       "id": "currency:DKK",
@@ -6706,7 +6706,7 @@
     {
       "attributes": {
         "country_count": 26,
-        "usd_rate": 0.85889
+        "usd_rate": 0.86237
       },
       "data_quality": "source",
       "id": "currency:EUR",
@@ -6726,7 +6726,7 @@
     {
       "attributes": {
         "country_count": 1,
-        "usd_rate": 0.73624
+        "usd_rate": 0.7386
       },
       "data_quality": "source",
       "id": "currency:GBP",
@@ -6816,7 +6816,7 @@
     {
       "attributes": {
         "country_count": 1,
-        "usd_rate": 313.31
+        "usd_rate": 314.2
       },
       "data_quality": "source",
       "id": "currency:HUF",
@@ -6826,7 +6826,7 @@
     {
       "attributes": {
         "country_count": 1,
-        "usd_rate": 17717
+        "usd_rate": 17710
       },
       "data_quality": "source",
       "id": "currency:IDR",
@@ -6836,7 +6836,7 @@
     {
       "attributes": {
         "country_count": 1,
-        "usd_rate": 2.9728
+        "usd_rate": 2.9878
       },
       "data_quality": "source",
       "id": "currency:ILS",
@@ -6846,7 +6846,7 @@
     {
       "attributes": {
         "country_count": 1,
-        "usd_rate": 95.39
+        "usd_rate": 95.17
       },
       "data_quality": "source",
       "id": "currency:INR",
@@ -6876,7 +6876,7 @@
     {
       "attributes": {
         "country_count": 1,
-        "usd_rate": 120.93
+        "usd_rate": 121.42
       },
       "data_quality": "source",
       "id": "currency:ISK",
@@ -6906,7 +6906,7 @@
     {
       "attributes": {
         "country_count": 1,
-        "usd_rate": 159.68
+        "usd_rate": 159.73
       },
       "data_quality": "source",
       "id": "currency:JPY",
@@ -6966,7 +6966,7 @@
     {
       "attributes": {
         "country_count": 1,
-        "usd_rate": 1374.55
+        "usd_rate": 1368.03
       },
       "data_quality": "source",
       "id": "currency:KRW",
@@ -7156,7 +7156,7 @@
     {
       "attributes": {
         "country_count": 1,
-        "usd_rate": 16.9481
+        "usd_rate": 17.0083
       },
       "data_quality": "source",
       "id": "currency:MXN",
@@ -7216,7 +7216,7 @@
     {
       "attributes": {
         "country_count": 1,
-        "usd_rate": 9.3271
+        "usd_rate": 9.3412
       },
       "data_quality": "source",
       "id": "currency:NOK",
@@ -7236,7 +7236,7 @@
     {
       "attributes": {
         "country_count": 1,
-        "usd_rate": 1.6821
+        "usd_rate": 1.6902
       },
       "data_quality": "source",
       "id": "currency:NZD",
@@ -7286,7 +7286,7 @@
     {
       "attributes": {
         "country_count": 1,
-        "usd_rate": 62.254
+        "usd_rate": 62.397
       },
       "data_quality": "source",
       "id": "currency:PHP",
@@ -7306,7 +7306,7 @@
     {
       "attributes": {
         "country_count": 1,
-        "usd_rate": 3.7246
+        "usd_rate": 3.7323
       },
       "data_quality": "source",
       "id": "currency:PLN",
@@ -7336,7 +7336,7 @@
     {
       "attributes": {
         "country_count": 1,
-        "usd_rate": 4.5164
+        "usd_rate": 4.5354
       },
       "data_quality": "source",
       "id": "currency:RON",
@@ -7416,7 +7416,7 @@
     {
       "attributes": {
         "country_count": 1,
-        "usd_rate": 9.5237
+        "usd_rate": 9.5809
       },
       "data_quality": "source",
       "id": "currency:SEK",
@@ -7426,7 +7426,7 @@
     {
       "attributes": {
         "country_count": 1,
-        "usd_rate": 1.2713
+        "usd_rate": 1.2727
       },
       "data_quality": "source",
       "id": "currency:SGD",
@@ -7506,7 +7506,7 @@
     {
       "attributes": {
         "country_count": 1,
-        "usd_rate": 32.955
+        "usd_rate": 33.165
       },
       "data_quality": "source",
       "id": "currency:THB",
@@ -7556,7 +7556,7 @@
     {
       "attributes": {
         "country_count": 1,
-        "usd_rate": 48.245
+        "usd_rate": 48.262
       },
       "data_quality": "source",
       "id": "currency:TRY",
@@ -7716,7 +7716,7 @@
     {
       "attributes": {
         "country_count": 1,
-        "usd_rate": 16.0018
+        "usd_rate": 16.1163
       },
       "data_quality": "source",
       "id": "currency:ZAR",
@@ -7866,7 +7866,7 @@
   ],
   "schema_version": "1.0",
   "sources": {
-    "fx_as_of": "2026-08-28",
-    "fx_fetched_at": "2026-08-31 09:58 UTC"
+    "fx_as_of": "2026-08-31",
+    "fx_fetched_at": "2026-09-01 06:28 UTC"
   }
 }

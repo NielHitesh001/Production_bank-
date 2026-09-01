@@ -2,7 +2,7 @@
 type: "moc"
 tags:
   - finance/moc
-last_updated: "2026-08-30 20:06 UTC"
+last_updated: "2026-09-01 06:21 UTC"
 ---
 # 🗺️ Oceania — Map of Content
 

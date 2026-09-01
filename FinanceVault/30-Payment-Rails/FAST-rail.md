@@ -5,7 +5,7 @@ rail_type: "Instant payment (retail & corporate)"
 operator: "Banking Computer Services / MAS"
 tags:
   - finance/payment-rail
-last_updated: "2026-08-28 21:58 UTC"
+last_updated: "2026-09-01 06:21 UTC"
 ---
 # 🔌 Fast And Secure Transfers (FAST) (FAST)
 
@@ -15,7 +15,7 @@ last_updated: "2026-08-28 21:58 UTC"
 |---|---|
 | Status | 🟢 OPEN |
 | Operating window | 24/7 |
-| Checked at | 2026-08-28 21:58 UTC |
+| Checked at | 2026-09-01 06:21 UTC |
 <!-- LIVE:STATUS:END -->
 
 ## ℹ️ Overview

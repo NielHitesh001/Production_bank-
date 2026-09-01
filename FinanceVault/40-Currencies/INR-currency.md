@@ -6,7 +6,7 @@ currency_symbol: "\u20b9"
 country_count: 1
 tags:
   - finance/currency
-last_updated: "2026-08-31 09:58 UTC"
+last_updated: "2026-09-01 06:28 UTC"
 ---
 # Indian rupee (INR) Currency Hub
 
@@ -14,9 +14,9 @@ last_updated: "2026-08-31 09:58 UTC"
 <!-- LIVE:FXRATE:START -->
 | Metric | Value |
 |---|---|
-| USD -> INR | `95.3900` |
+| USD -> INR | `95.1700` |
 | Source | ECB reference rate (via frankfurter.app) |
-| As of | 2026-08-28 |
+| As of | 2026-08-31 |
 <!-- LIVE:FXRATE:END -->
 
 ## Countries Using INR

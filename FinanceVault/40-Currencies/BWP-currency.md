@@ -6,7 +6,7 @@ currency_symbol: "P"
 country_count: 2
 tags:
   - finance/currency
-last_updated: "2026-08-31 09:58 UTC"
+last_updated: "2026-09-01 06:28 UTC"
 ---
 # Botswana pula (BWP) Currency Hub
 
@@ -16,7 +16,7 @@ last_updated: "2026-08-31 09:58 UTC"
 |---|---|
 | USD -> BWP | `N/A` |
 | Source | ECB reference rate (via frankfurter.app) |
-| As of | 2026-08-28 |
+| As of | 2026-08-31 |
 <!-- LIVE:FXRATE:END -->
 
 ## Countries Using BWP

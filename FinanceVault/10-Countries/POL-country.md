@@ -10,7 +10,7 @@ population: "N/A"
 tags:
   - finance/country
   - region/europe
-last_updated: "2026-08-31 09:58 UTC"
+last_updated: "2026-09-01 06:28 UTC"
 ---
 # 🏦 Poland — Financial Tear Sheet
 
@@ -24,9 +24,9 @@ last_updated: "2026-08-31 09:58 UTC"
 <!-- LIVE:FXRATE:START -->
 | Metric | Value |
 |---|---|
-| USD → PLN | `3.7246` |
+| USD → PLN | `3.7323` |
 | Source | ECB reference rate (via frankfurter.app) |
-| As of | 2026-08-28 |
+| As of | 2026-08-31 |
 <!-- LIVE:FXRATE:END -->
 
 ## 🏛️ Monetary Authority

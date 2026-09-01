@@ -3,17 +3,16 @@
  * Compliant with SEC Rule 17a-5 and FINRA regulatory audit standards.
  */
 
-// Universal SHA-256 helper supporting both browser WebCrypto and Node.js
+// Browser-safe SHA-256 helper. Server-side audit hashing happens in the API/
+// database boundary; do not import Node built-ins into the Vite bundle.
 export async function computeSha256(message) {
-  if (typeof crypto !== "undefined" && crypto.subtle) {
+  if (globalThis.crypto?.subtle) {
     const msgBuffer = new TextEncoder().encode(message);
-    const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+    const hashBuffer = await globalThis.crypto.subtle.digest("SHA-256", msgBuffer);
     const hashArray = Array.from(new Uint8Array(hashBuffer));
     return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
   }
-  // Node.js fallback
-  const { createHash } = await import("node:crypto");
-  return createHash("sha256").update(message).digest("hex");
+  throw new Error("Web Crypto SHA-256 is required by the audit client");
 }
 
 export class ImmutableAuditLog {

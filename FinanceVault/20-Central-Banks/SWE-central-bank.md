@@ -1,30 +1,27 @@
 ---
 type: "central-bank"
 country: "SWE"
-code: "N/A"
-established: "unknown"
+code: "RB"
+established: 1668
 policy_rate_source: "curated/manual"
 policy_rate_as_of: "N/A"
 tags:
   - finance/central-bank
-data_quality: "auto-stub"
-last_updated: "2026-08-31 08:26 UTC"
+data_quality: "curated"
+last_updated: "2026-09-01 06:21 UTC"
 ---
-# 🏛️ Central Bank of Sweden
-
-> [!warning] Auto-generated stub
-> This entity has not been manually curated yet. Policy rate and mandate are placeholders — extend `CURATED_CENTRAL_BANKS` in the daemon to enrich it.
+# 🏛️ Sveriges Riksbank
 
 ## 📊 Policy Snapshot
 <!-- LIVE:POLICY-RATE:START -->
 | Metric | Value |
 |---|---|
-| Policy Rate | `N/A%` |
+| Policy Rate | `3.5%` |
 | Rate Source | curated/manual |
 | Rate As Of | N/A |
-| Mandate | Not yet catalogued |
-| CBDC Status | Not yet catalogued |
-| Data quality | 🟡 auto-stub — needs enrichment |
+| Mandate | Price stability (2% CPIF target) |
+| CBDC Status | e-krona — technical pilot completed |
+| Data quality | 🟢 curated |
 <!-- LIVE:POLICY-RATE:END -->
 
 ## 🔗 Graph Context
