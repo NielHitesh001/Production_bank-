@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
 ================================================================================
- OBSIDIAN GLOBAL FINANCIAL ARCHITECTURE DAEMON
+ WORLD MONEY FINANCIAL DATA REFRESH DAEMON
 --------------------------------------------------------------------------------
- A 24/7 background service that builds and continuously maintains an Obsidian
- vault mapping the global financial system: sovereign states, central banks,
+ A 24/7 background service that builds and continuously maintains a structured
+ financial data workspace mapping sovereign states, central banks,
  currencies, and interbank payment rails (SWIFT, Fedwire, CHIPS, TARGET2,
  SEPA, UPI, CIPS, PIX, FedNow, CHAPS...).
 
@@ -663,7 +663,7 @@ class ManagedFileWriter:
     """Splits any existing file at NOTES_SENTINEL. Regenerates everything
     above it from fresh template output; copies everything below it,
     unchanged, forever. Skips the disk write entirely if content is
-    byte-identical (keeps Obsidian's file-watcher / re-index quiet).
+                    byte-identical (keeps downstream file watchers quiet).
 
     IMPORTANT: multiple jobs (countries, fx, policy-rates...) can target the
     same file concurrently from different worker threads. Without a lock, a
@@ -1313,7 +1313,7 @@ class DaemonRunner:
 # ==============================================================================
 
 def parse_args() -> argparse.Namespace:
-    p = argparse.ArgumentParser(description="Obsidian Global Financial Architecture Daemon")
+    p = argparse.ArgumentParser(description="World Money Financial Data Refresh Daemon")
     p.add_argument("--vault-path", type=Path, default=Path("./FinanceVault"))
     p.add_argument("--once", action="store_true", help="run a single build cycle and exit (cron-friendly)")
     p.add_argument("--workers", type=int, default=8)

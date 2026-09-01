@@ -551,7 +551,7 @@ export default function Dashboard() {
               className={liquiditySubView === "network" ? "active" : ""}
               onClick={() => setLiquiditySubView("network")}
             >
-              Obsidian Knowledge Graph
+              Financial Relationship Graph
             </button>
           </nav>
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the generated parts of a World Money Obsidian vault."""
+"""Validate generated World Money relationship data."""
 
 from __future__ import annotations
 

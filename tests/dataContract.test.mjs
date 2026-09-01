@@ -67,7 +67,7 @@ test("Central Banks dataset contains major monetary authorities with valid polic
   }
 });
 
-test("Exported canonical vault graph conforms to schema v1.0", () => {
+test("Exported canonical relationship graph conforms to schema v1.0", () => {
   const exportPath = path.resolve("./FinanceVault/_system/exports/world-money-graph.v1.json");
   if (fs.existsSync(exportPath)) {
     const raw = fs.readFileSync(exportPath, "utf-8");

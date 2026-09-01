@@ -31,7 +31,7 @@ flowchart TB
         Desk[TerminalWorkspace: Multi-Desk Presets]
     end
 
-    subgraph Core_Vault [Obsidian FinanceVault & AML]
+    subgraph Core_Vault [Financial Data Snapshot & AML]
         direction TB
         Graph[EntityGraph: 570+ Sovereign Nodes & Rails]
         Finder[ConnectionFinder: Shortest Path Routing]
@@ -80,4 +80,4 @@ flowchart TB
 
 ## 3. Integration with World Money Core
 - **Cross-View Routing**: `CommandPalette.jsx` routes seamlessly between the Trading Terminal, Macro Liquidity Monitor, and MoneyTrace AML.
-- **Entity Linking**: Entity pills in the News Feed (`#BLACKROCK-US`, `#JIO-IN`, `#FED`) link directly into the **Obsidian Knowledge Graph** and **Multi-Hop Connection Finder**.
+- **Entity Linking**: Entity pills in the News Feed (`#BLACKROCK-US`, `#JIO-IN`, `#FED`) link directly into the **Financial Relationship Graph** and **Multi-Hop Connection Finder**.

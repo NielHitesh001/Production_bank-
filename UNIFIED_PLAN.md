@@ -2,26 +2,24 @@
 
 ## Product decision
 
-World Money is a **global liquidity map**: an Obsidian-first knowledge graph
-that traces financial infrastructure from sovereigns and central banks through
-currencies and payment rails. It is generated and kept current by the Python
-daemon. The primary user outcome is an explorable, internally linked vault;
-the long-term outcome is a single-screen visual dashboard over that same data.
+World Money is a **visual intelligence and financial transaction-tracing
+platform** that traces financial infrastructure from sovereigns and central
+banks through currencies, payment rails, entities, and transaction flows. The
+primary user outcome is a high-performance analyst workspace with reliable,
+auditable data projections.
 
 ## Source of truth
 
-- `obsidian_finance_daemon.py` is the production data and generation service.
-- Generated vault content is the current product artifact. The daemon preserves
-  all content below `## 📝 Notes`.
+- The Python data-refresh daemon is the current snapshot generation service.
+- Generated relationship snapshots are an input contract for the dashboard.
 - `README.md`, `requirements.txt`, `validate_vault.py`, tests, and CI define
   the supported operating path.
-- The checked-in `.obsidian/` configuration provides the default graph-view
-  experience for a generated vault.
+- The Vite/React application provides the default analyst experience.
 
 ## Supporting prototypes and architecture
 
 - The Vite React app provides a unified analyst interface featuring:
-  1. **Global Liquidity Map**: Macro monetary base charts (FRED M2, Fed Funds, CPI, 10Y Yields, Balance Sheets, World Bank GDP), Payment Rails Infrastructure Matrix (SWIFT, Fedwire, CHIPS, TARGET2, SEPA, UPI, CIPS, PIX, FedNow, CHAPS), Central Bank Policy Hub, and the Obsidian Knowledge Graph.
+  1. **Global Liquidity Map**: Macro monetary base charts (FRED M2, Fed Funds, CPI, 10Y Yields, Balance Sheets, World Bank GDP), Payment Rails Infrastructure Matrix, Central Bank Policy Hub, and the Financial Relationship Graph.
   2. **MoneyTrace AML Intelligence**: Multi-hop path tracing, alert triage, case annotations, role-aware masking, saved views, and CSV/JSON reporting.
 - Prototypes are organized in `prototypes/` (`mock-stream/` and `next-api/`).
 - Service deployment configurations are versioned as templates in `deploy/`.

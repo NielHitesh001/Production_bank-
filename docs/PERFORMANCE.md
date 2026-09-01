@@ -27,7 +27,7 @@ Total Steady-State Memory Budget: < 50 MB Heap
 ├────────────────────────────────────────────────────────┤
 │ Circular Tick Buffer (10,000 ticks): ~2.4 MB           │
 ├────────────────────────────────────────────────────────┤
-│ Obsidian Vault Canonical Graph (570+ Nodes): ~3.8 MB   │
+│ Canonical Relationship Graph (570+ Nodes): ~3.8 MB     │
 ├────────────────────────────────────────────────────────┤
 │ React 19 VDOM & Active Layout State: ~12.5 MB          │
 └────────────────────────────────────────────────────────┘

@@ -35,7 +35,7 @@ World Money Terminal OS v3.0.0 is the **General Availability (GA)** release of a
 - **Portfolio Value-at-Risk (VaR)**: 95% and 99% parametric VaR with 4 macroeconomic stress shock scenarios.
 - **Black-Scholes Greeks Engine**: Delta, Gamma, Vega, Theta, and Rho derivative sensitivities.
 - **Global Macro Calendar**: Central bank rate decision schedules (FOMC, ECB, BOJ, US CPI).
-- **MoneyTrace Entity Linking**: 1-click investigation routing from news feed tags (`#BLACKROCK-US`, `#JIO-IN`) to Obsidian knowledge graphs.
+- **MoneyTrace Entity Linking**: 1-click investigation routing from news feed tags (`#BLACKROCK-US`, `#JIO-IN`) to financial relationship graphs.
 
 ### 6. 🔭 Observability & Telemetry
 - **Prometheus Metric Stream**: `GET /metrics` for scrapers and Grafana.

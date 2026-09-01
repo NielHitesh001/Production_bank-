@@ -1552,7 +1552,7 @@ fieldset legend { margin-bottom: 12px; }
   color: #64dcb1;
 }
 
-/* Obsidian Knowledge Graph Panel */
+/* Financial Relationship Graph Panel */
 .entity-graph-panel {
   display: flex;
   flex-direction: column;
@@ -3293,4 +3293,3 @@ fieldset legend { margin-bottom: 12px; }
 .risk-banner, .case-card { background: #080808; }
 .case-card.selected-case { background: #0d1713; }
 .detail-block, fieldset { border-color: #202020; }
-

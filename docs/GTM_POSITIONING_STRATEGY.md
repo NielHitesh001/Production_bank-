@@ -7,7 +7,7 @@
 | **Real-Time Corridor Liquidity** | **Real-Time (<5s)** | 2–4h Delayed | 2–4h Delayed | Not Available |
 | **Emerging Market Rails** | **30+ Global / EM Corridors** | Limited (Tier 1) | Limited (Tier 1) | Not Available |
 | **API & MCP Agent Connectivity** | **Native REST, WS & Claude MCP** | Terminal / B-PIPE | Enterprise Refinitiv | Limited Webhook |
-| **Knowledge Graph Topology** | **Obsidian Markdown Vault** | Proprietary Closed | Proprietary Closed | None |
+| **Knowledge Graph Topology** | **Linked Financial Graph** | Proprietary Closed | Proprietary Closed | None |
 | **Institutional Cost** | **Scalable API Tiering** | $2,500 / seat / mo | $2,000 / seat / mo | Consumer Pro |
 | **Deployment Model** | **Local-first / Private Cloud** | Dedicated Hardware | Cloud / Desktop | Public Cloud |
 

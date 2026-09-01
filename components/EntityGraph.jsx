@@ -224,12 +224,12 @@ export default function EntityGraph() {
     <section className="dashboard-panel entity-graph-panel">
       <div className="panel-heading">
         <div>
-          <span className="eyebrow">OBSIDIAN VAULT KNOWLEDGE GRAPH</span>
+          <span className="eyebrow">GLOBAL FINANCIAL RELATIONSHIP GRAPH</span>
           <h2>Global Financial Architecture Network ({filteredData.nodes.length} Nodes · {filteredData.links.length} Relations)</h2>
         </div>
         <div className="graph-live-badge">
           <span className={`status-dot ${dataStatus === "live" ? "live" : "demo"}`} />
-          {dataStatus === "live" ? "CANONICAL VAULT EXPORT (LIVE)" : "DEMO KNOWLEDGE SEED"}
+          {dataStatus === "live" ? "CANONICAL DATA EXPORT (LIVE)" : "DEMO KNOWLEDGE SEED"}
         </div>
       </div>
 

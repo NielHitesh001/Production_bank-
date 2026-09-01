@@ -223,7 +223,7 @@ const server = http.createServer(async (req, res) => {
         </tr>
         <tr>
           <td><code>GET</code> <a href="/api/graph">/api/graph</a></td>
-          <td>Canonical Obsidian Financial Knowledge Graph</td>
+          <td>Canonical Financial Relationship Graph</td>
           <td><span class="badge-ok">ACTIVE</span></td>
         </tr>
         <tr>

@@ -4,7 +4,7 @@ Status: accepted for the initial deployment.
 
 ## Decision
 
-The Obsidian FinanceVault remains the legacy source for its generated graph export. The operational system consumes an explicit, revisioned JSON snapshot from `FinanceVault/_system/exports/world-money-graph.v1.json`; it does not install a live write hook inside the vault writer.
+The legacy financial data workspace remains the source for its generated graph export. The operational system consumes an explicit, revisioned JSON snapshot from `FinanceVault/_system/exports/world-money-graph.v1.json`; it does not install a live write hook inside the legacy writer.
 
 Each export must include a monotonic `revision` and `generated_at` timestamp. The importer records both values with its ingest job. A snapshot is atomic at the file-replace boundary. The operational mirror is permitted to trail the legacy export by **at most 15 minutes plus one ingestion cycle**; the target ingestion cycle is 60 seconds. Stage 5 parity checks compare an operational revision only with the legacy revision it names, never with a later mutable vault state.
 
