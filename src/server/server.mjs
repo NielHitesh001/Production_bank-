@@ -14,6 +14,8 @@ import { STRATEGY_TEMPLATES, runQuantitativeBacktest } from "../services/backtes
 import { pythonBridge } from "../services/pythonBridge.js";
 import { processClaudeMessage, handleMCPToolCall } from "./mcpHandler.mjs";
 import { STRATEGY_IDE_MCP_TOOLS } from "../services/claudeMCPTools.js";
+import { wsMarketManager } from "../services/wsManager.js";
+import { validateEntitlement, freshnessState, maskForRole, boundedLimit, buildResearchResult, ENTITLEMENT_VERSION } from "../services/readOnlyIntelligence.js";
 
 // Load .env.local or .env if present
 function loadEnv() {
@@ -96,6 +98,23 @@ function saveDb(data) {
 }
 
 let db = initDb();
+
+function readEntitlement(req) {
+  try { return JSON.parse(req.headers["x-entitlement-snapshot"] || "null"); } catch { return null; }
+}
+
+function appendReadAudit(event, req, details = {}) {
+  db.immutableAuditLogs = db.immutableAuditLogs || [];
+  const previousHash = db.immutableAuditLogs.at(-1)?.hash || "0".repeat(64);
+  const sequence = db.immutableAuditLogs.length + 1;
+  const serverTimestamp = new Date().toISOString();
+  const payload = JSON.stringify({ sequence, event, previousHash, serverTimestamp, ...details });
+  const hash = crypto.createHash("sha256").update(payload).digest("hex");
+  db.immutableAuditLogs.push({ sequence, event, previousHash, hash, serverTimestamp, user: req.headers["x-subject-id"] || "unknown", ...details });
+  saveDb(db);
+  metricsRegistry.incAudit();
+  return sequence;
+}
 
 function setCorsHeaders(res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -230,6 +249,35 @@ const server = http.createServer(async (req, res) => {
     if (pathname === "/api/macro" && req.method === "GET") {
       const data = await fetchMacroLiquidity();
       sendJson(res, 200, data);
+      return;
+    }
+
+    // Checkpoint 3: entitlement-aware, read-only market projection.
+    if (pathname === "/api/v1/market-data" && req.method === "GET") {
+      const subjectId = req.headers["x-subject-id"] || "unknown";
+      const decision = validateEntitlement(readEntitlement(req), { subjectId, scope: "market:read" });
+      if (!decision.allowed) { sendJson(res, 403, { error: "market_data_entitlement_denied", reason: decision.reason }); return; }
+      const role = req.headers["x-role"] || "Analyst";
+      const now = Date.now();
+      const tickers = wsMarketManager.getAllTickers().map((ticker) => ({ ...maskForRole(ticker, role), freshness: freshnessState({ watermarkAt: ticker.timestamp, now }) }));
+      appendReadAudit("market_data.read", req, { scope: "market:read", count: tickers.length });
+      sendJson(res, 200, { entitlementVersion: ENTITLEMENT_VERSION, serverWatermark: new Date(now).toISOString(), tickers });
+      return;
+    }
+
+    // Checkpoint 3: bounded analytics/research projection; no mutations.
+    if (pathname === "/api/v1/research/query" && req.method === "GET") {
+      const subjectId = req.headers["x-subject-id"] || "unknown";
+      const decision = validateEntitlement(readEntitlement(req), { subjectId, scope: "research:read" });
+      if (!decision.allowed) { sendJson(res, 403, { error: "research_entitlement_denied", reason: decision.reason }); return; }
+      const query = parsedUrl.searchParams.get("q") || "";
+      const limit = boundedLimit(parsedUrl.searchParams.get("limit"));
+      const rows = getTransactions({ anomalousOnly: parsedUrl.searchParams.get("anomalousOnly") });
+      const filtered = query ? rows.filter((row) => JSON.stringify(row).toLowerCase().includes(query.toLowerCase())) : rows;
+      const role = req.headers["x-role"] || "Analyst";
+      const result = buildResearchResult(filtered.map((row) => maskForRole(row, role)), { limit, query });
+      appendReadAudit("research.query", req, { scope: "research:read", query, count: result.rows.length });
+      sendJson(res, 200, result);
       return;
     }
 
