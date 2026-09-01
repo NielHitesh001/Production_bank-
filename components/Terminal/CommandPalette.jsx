@@ -48,7 +48,7 @@ export default function CommandPalette({ isOpen, onClose, onExecuteCommand }) {
           <input
             autoFocus
             type="text"
-            placeholder="Type Bloomberg function (e.g. ALLQ, BLOT, WIRP, FXFA, VAR)..."
+            placeholder="Search actions (e.g. quotes, risk, macro, AML)…"
             value={query}
             onChange={(e) => {
               setQuery(e.target.value);
@@ -76,13 +76,13 @@ export default function CommandPalette({ isOpen, onClose, onExecuteCommand }) {
             </div>
           ))}
           {filteredCommands.length === 0 && (
-            <div className="palette-empty">NO MATCHING BLOOMBERG FUNCTIONS</div>
+            <div className="palette-empty">NO MATCHING INTELLIGENCE COMMANDS</div>
           )}
         </div>
 
         <div className="palette-footer">
           <span>NAVIGATION: ↑↓ TO SELECT · ENTER TO &lt;GO&gt; · ESC TO DISMISS</span>
-          <span className="palette-bloomberg-label">BLOOMBERG TERMINAL OS</span>
+          <span className="palette-bloomberg-label">WORLD MONEY COMMAND CENTER</span>
         </div>
       </div>
     </div>

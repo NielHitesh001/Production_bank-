@@ -9,7 +9,7 @@ import InstitutionalEntityBrowser from "./InstitutionalEntityBrowser.jsx";
 import StrategyIDETab from "./StrategyIDETab.jsx";
 
 export default function TerminalWorkspace({ onSelectSymbol, onFilterEntity, externalSymbol, focusedDossier }) {
-  const [deskLayout, setDeskLayout] = useState("trading"); // "trading" | "risk" | "news" | "graph"
+  const [deskLayout, setDeskLayout] = useState("trading"); // "trading" | "risk" | "news" | "graph" | "ide"
   const [selectedSymbol, setSelectedSymbol] = useState(externalSymbol || "EUR/USD");
   const [positions, setPositions] = useState(INITIAL_PORTFOLIO_POSITIONS);
   const [accountBalance, setAccountBalance] = useState(1000000);
@@ -53,41 +53,41 @@ export default function TerminalWorkspace({ onSelectSymbol, onFilterEntity, exte
             className={`desk-tab-btn ${deskLayout === "trading" ? "active" : ""}`}
             onClick={() => setDeskLayout("trading")}
           >
-            ⚡ FX & MACRO TRADING DESK
+            ◈ MARKET & MACRO DESK
           </button>
           <button
             className={`desk-tab-btn ${deskLayout === "risk" ? "active" : ""}`}
             onClick={() => setDeskLayout("risk")}
           >
-            🛡 RISK & VaR ANALYTICS
+            ◇ RISK & CONTROL REVIEW
           </button>
           <button
             className={`desk-tab-btn ${deskLayout === "news" ? "active" : ""}`}
             onClick={() => setDeskLayout("news")}
           >
-            📰 LIVE NEWS & EVENT STREAM
+            ◌ EVENT INTELLIGENCE
           </button>
           <button
             className={`desk-tab-btn ${deskLayout === "graph" ? "active" : ""}`}
             onClick={() => setDeskLayout("graph")}
           >
-            🌐 INSTITUTIONAL GRAPH (274 NODES)
+            ◎ RELATIONSHIP GRAPH
           </button>
           <button
             className={`desk-tab-btn ${deskLayout === "ide" ? "active" : ""}`}
             onClick={() => setDeskLayout("ide")}
           >
-            💻 STRATEGY IDE (AI QUANT)
+            ▣ RESEARCH LAB
           </button>
         </div>
 
         <div className="workspace-status-strip">
           <span>ACTIVE DESK: <b>{deskLayout.toUpperCase()}</b></span>
-          <span>FEED: <b style={{ color: "#64dcb1" }}>CONNECTED (280ms)</b></span>
+          <span>DATA STATUS: <b style={{ color: "#64dcb1" }}>CONNECTED (280ms)</b></span>
         </div>
       </div>
 
-      {/* DESK 1: FX & MACRO TRADING DESK */}
+      {/* DESK 1: PAPER-ONLY MARKET & MACRO DESK */}
       {deskLayout === "trading" && (
         <div className="trading-desk-grid">
           {/* Top Row: Chart (Left) + Order Ticket (Right) */}

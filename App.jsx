@@ -429,19 +429,19 @@ export default function Dashboard() {
             className={activeTab === "terminal" ? "active" : ""}
             onClick={() => setActiveTab("terminal")}
           >
-            ⚡ Bloomberg Terminal
+            Market Intelligence
           </button>
           <button
             className={activeTab === "liquidity" ? "active" : ""}
             onClick={() => setActiveTab("liquidity")}
           >
-            Global Liquidity Map
+            Macro & Liquidity
           </button>
           <button
             className={activeTab === "investigate" ? "active" : ""}
             onClick={() => setActiveTab("investigate")}
           >
-            MoneyTrace AML
+            Relationship Intelligence
           </button>
           <button
             className={activeTab === "cases" ? "active" : ""}
@@ -449,13 +449,13 @@ export default function Dashboard() {
               setActiveTab("investigate");
             }}
           >
-            Cases <b>03</b>
+            Casework <b>03</b>
           </button>
           <button onClick={() => setAuditOpen(true)}>Audit Ledger</button>
           <button
             className="cmd-k-trigger"
             onClick={() => setCommandPaletteOpen(true)}
-            title="Press Cmd+K for Bloomberg commands"
+            title="Open the command palette (Cmd+K)"
           >
             <kbd>CMD</kbd> (Cmd+K)
           </button>
@@ -503,7 +503,7 @@ export default function Dashboard() {
         setActiveTab("terminal");
       }} />
 
-      {/* VIEW 0: BLOOMBERG TERMINAL WORKSPACE */}
+      {/* VIEW 0: MARKET INTELLIGENCE WORKSPACE */}
       {activeTab === "terminal" && (
         <TerminalWorkspace
           externalSymbol={focusedSymbol}
@@ -741,7 +741,7 @@ export default function Dashboard() {
             <section className="graph-shell">
               <div className="graph-header">
                 <div>
-                  <span className="eyebrow">{investigationViewMode === "graph" ? "LIVE RELATIONSHIP GRAPH" : "BLOOMBERG DATA GRID"}</span>
+                  <span className="eyebrow">{investigationViewMode === "graph" ? "LIVE RELATIONSHIP GRAPH" : "INVESTIGATION DATA GRID"}</span>
                   <h1>{investigationViewMode === "graph" ? "Cross-border transaction network" : "Interbank Transaction & Entity Blotter"}</h1>
                 </div>
 
@@ -756,7 +756,7 @@ export default function Dashboard() {
                     className={`view-mode-btn ${investigationViewMode === "blotter" ? "active" : ""}`}
                     onClick={() => setInvestigationViewMode("blotter")}
                   >
-                    ▤ Bloomberg Full List
+                    ▤ Full transaction list
                   </button>
                 </div>
 
@@ -1083,7 +1083,7 @@ export default function Dashboard() {
         </div>
       )}
 
-      {/* BLOOMBERG COMMAND PALETTE MODAL */}
+      {/* GLOBAL COMMAND PALETTE MODAL */}
       <CommandPalette
         isOpen={commandPaletteOpen}
         onClose={() => setCommandPaletteOpen(false)}

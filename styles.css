@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap');
-:root { font-family: Manrope, Arial, sans-serif; color: #e6eeeb; background: #070a0b; font-synthesis: none; }
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
+:root { font-family: Inter, Arial, sans-serif; color: #e8eeec; background: #000; font-synthesis: none; }
 * { box-sizing: border-box; }
 body { margin: 0; min-width: 1160px; background: #070a0b; }
 button, input, select, textarea { font: inherit; }
@@ -3293,3 +3293,194 @@ fieldset legend { margin-bottom: 12px; }
 .risk-banner, .case-card { background: #080808; }
 .case-card.selected-case { background: #0d1713; }
 .detail-block, fieldset { border-color: #202020; }
+
+/* =============================================================================
+   FINANCIAL INTELLIGENCE TERMINAL — UI/UX SYSTEM
+   Adapted from the supplied terminal design reference for relationship analysis.
+   The application remains pitch-black by design; cyan is interaction context,
+   green/amber/crimson are reserved for healthy/risk/critical operational states.
+   ========================================================================== */
+:root {
+  --ui-bg: #000;
+  --ui-surface: #050505;
+  --ui-surface-raised: #0b0b0c;
+  --ui-surface-hover: #141517;
+  --ui-border: #242529;
+  --ui-border-strong: #3a3c42;
+  --ui-text: #edf1f0;
+  --ui-text-muted: #8d9697;
+  --ui-text-faint: #626a6c;
+  --ui-cyan: #38d7ff;
+  --ui-green: #61d9ac;
+  --ui-amber: #f1ae55;
+  --ui-crimson: #ff6678;
+  --ui-mono: "IBM Plex Mono", "DM Mono", monospace;
+  --ui-sans: Inter, Arial, sans-serif;
+}
+
+body {
+  min-width: 0;
+  color: var(--ui-text);
+  background: var(--ui-bg);
+  font-family: var(--ui-sans);
+}
+
+button, input, select, textarea { font-family: inherit; }
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--ui-cyan);
+  outline-offset: 2px;
+}
+
+.intel-app { min-height: 100dvh; background: var(--ui-bg); }
+.topbar {
+  height: 64px;
+  padding: 0 24px;
+  gap: 18px;
+  background: rgba(0, 0, 0, .97);
+  border-color: var(--ui-border);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, .22);
+}
+.brand { gap: 10px; color: var(--ui-text); font-size: 14px; }
+.brand-glyph {
+  width: 28px;
+  height: 28px;
+  color: #001016;
+  background: var(--ui-cyan);
+  box-shadow: 0 0 18px rgba(56, 215, 255, .24);
+}
+.brand small { color: var(--ui-text-faint); border-color: var(--ui-border); font-family: var(--ui-mono); }
+.topbar nav { gap: 2px; margin-left: 20px; }
+.topbar nav button {
+  padding: 0 10px;
+  color: var(--ui-text-muted);
+  font-size: 11px;
+  letter-spacing: .01em;
+  transition: color .16s ease, background .16s ease;
+}
+.topbar nav button:hover { color: var(--ui-text); background: var(--ui-surface-hover); }
+.topbar nav button.active { color: var(--ui-text); }
+.topbar nav button.active:after { background: var(--ui-cyan); }
+.topbar nav b { color: #001016; background: var(--ui-cyan); }
+.operator { color: var(--ui-text-muted); font-family: var(--ui-mono); }
+.live-dot { background: var(--ui-green); box-shadow: 0 0 10px rgba(97, 217, 172, .9); }
+.cmd-k-trigger { color: var(--ui-cyan) !important; border-color: rgba(56, 215, 255, .35) !important; background: rgba(56, 215, 255, .07) !important; }
+.cmd-k-trigger kbd { background: rgba(56, 215, 255, .13); color: var(--ui-text); }
+
+.terminal-ticker-ribbon { height: 30px; background: #010101; border-color: var(--ui-border); }
+.ticker-ribbon-badge { color: var(--ui-cyan); background: var(--ui-surface); border-color: var(--ui-border); font-family: var(--ui-mono); }
+.live-pulse-dot { background: var(--ui-cyan); box-shadow: 0 0 8px var(--ui-cyan); }
+.ticker-item { font-family: var(--ui-mono); }
+.ticker-item:hover { background: rgba(56, 215, 255, .08); }
+.ticker-symbol { color: var(--ui-text-muted); }
+.ticker-price { color: var(--ui-text); }
+.ticker-delta.pos { color: var(--ui-green); }
+.ticker-delta.neg { color: var(--ui-crimson); }
+
+.terminal-workspace-container { background: var(--ui-bg); }
+.terminal-sub-toolbar {
+  min-height: 46px;
+  padding: 7px 22px;
+  gap: 12px;
+  background: var(--ui-surface);
+  border-color: var(--ui-border);
+}
+.desk-preset-tabs { gap: 5px; overflow-x: auto; scrollbar-width: thin; }
+.desk-tab-btn {
+  padding: 7px 10px;
+  color: var(--ui-text-muted);
+  background: transparent;
+  border-color: transparent;
+  font-family: var(--ui-mono);
+  letter-spacing: .025em;
+  white-space: nowrap;
+}
+.desk-tab-btn:hover { color: var(--ui-text); background: var(--ui-surface-hover); border-color: var(--ui-border); }
+.desk-tab-btn.active { color: var(--ui-cyan); background: rgba(56, 215, 255, .08); border-color: rgba(56, 215, 255, .3); }
+.workspace-status-strip { color: var(--ui-text-faint); font-family: var(--ui-mono); white-space: nowrap; }
+.workspace-status-strip b { color: var(--ui-text); }
+.trading-desk-grid, .risk-desk-grid, .news-desk-grid { padding: 16px 22px 24px; gap: 16px; }
+.trading-top-row, .risk-top-row { gap: 16px; }
+
+.terminal-candle-panel, .terminal-order-ticket, .blotter-container, .risk-panel, .fx-carry-panel, .live-news-panel {
+  background: var(--ui-surface);
+  border-color: var(--ui-border);
+  border-radius: 4px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, .16);
+}
+.terminal-candle-panel:hover, .terminal-order-ticket:hover { border-color: var(--ui-border-strong); }
+.eyebrow { color: var(--ui-cyan); font-family: var(--ui-mono); }
+.candle-title-group h3, .ticket-title-group h3 { color: var(--ui-text); }
+.candle-svg-container { background: #000; border-color: #1b1c1f; }
+.tf-btn, .tech-toggle-btn { background: #050506; border-color: var(--ui-border); color: var(--ui-text-muted); }
+.tf-btn:hover, .tech-toggle-btn:hover { color: var(--ui-text); border-color: var(--ui-border-strong); }
+.tf-btn.active, .tech-toggle-btn.active { color: var(--ui-cyan); border-color: rgba(56, 215, 255, .38); background: rgba(56, 215, 255, .08); }
+.ticket-badge { color: var(--ui-cyan); border-color: rgba(56, 215, 255, .3); background: rgba(56, 215, 255, .07); }
+
+.commandbar { min-height: 58px; padding: 0 24px; background: var(--ui-surface); border-color: var(--ui-border); }
+.breadcrumb, .command-actions button, .secondary { font-family: var(--ui-mono); }
+.command-actions { flex-wrap: wrap; }
+.command-actions button, .secondary { border-color: var(--ui-border); background: #080809; color: var(--ui-text-muted); }
+.command-actions button:hover, .secondary:hover { color: var(--ui-text); border-color: var(--ui-border-strong); }
+.command-actions .trace-on { color: var(--ui-cyan); border-color: rgba(56, 215, 255, .32); background: rgba(56, 215, 255, .07); }
+.command-actions .primary { color: #001016; border-color: var(--ui-cyan); background: var(--ui-cyan); }
+.workbench { grid-template-columns: 272px minmax(440px, 1fr) 336px; height: calc(100dvh - 152px); }
+.filter-rail, .inspector { padding: 20px; background: var(--ui-surface); border-color: var(--ui-border); }
+.graph-shell { background: #000; }
+.graph-header { height: 82px; padding: 0 24px; border-color: var(--ui-border); }
+.graph-header h1 { color: var(--ui-text); font-size: 18px; }
+.graph-wrap { background-image: radial-gradient(rgba(97, 217, 172, .16) .65px, transparent .65px); }
+.graph-tools, .legend, .trace-status { background: rgba(5, 5, 6, .95); border-color: var(--ui-border); }
+.legend { color: var(--ui-text-muted); font-family: var(--ui-mono); }
+.search, .case-note textarea { background: #000; border-color: var(--ui-border); }
+.search:focus-within, .case-note textarea:focus { border-color: rgba(56, 215, 255, .62); }
+.filter-rail input[type=range], .choice input { accent-color: var(--ui-cyan); }
+.risk-banner, .case-card { background: var(--ui-surface-raised); }
+.case-card:hover { background: var(--ui-surface-hover); }
+.case-card.selected-case { background: rgba(56, 215, 255, .07); border-color: rgba(56, 215, 255, .45); }
+.casebar { background: var(--ui-surface); border-color: var(--ui-border); }
+.audit-panel { background: #050506; border-color: var(--ui-border-strong); }
+.audit-overlay { backdrop-filter: blur(7px); }
+
+@media (max-width: 1320px) {
+  .topbar { padding: 0 16px; }
+  .topbar nav { margin-left: 4px; }
+  .topbar nav button { padding: 0 7px; font-size: 10px; }
+  .operator { display: none; }
+  .workbench { grid-template-columns: 244px minmax(390px, 1fr) 290px; }
+  .workspace-status-strip { display: none; }
+}
+
+@media (max-width: 1080px) {
+  .topbar { height: auto; min-height: 58px; flex-wrap: wrap; padding-block: 8px; }
+  .brand small, .topbar nav button:nth-child(4), .topbar nav button:nth-child(5) { display: none; }
+  .topbar nav { order: 3; width: 100%; margin: 0; min-height: 32px; }
+  .topbar nav button { flex: 1; }
+  .topbar > div[style] { margin-left: auto !important; margin-right: 0 !important; }
+  .terminal-sub-toolbar { padding-inline: 12px; }
+  .workbench { grid-template-columns: 230px minmax(0, 1fr); height: auto; min-height: calc(100dvh - 190px); }
+  .inspector { grid-column: 1 / -1; max-height: 440px; border-top: 1px solid var(--ui-border); border-left: 0; }
+  .trading-top-row, .risk-top-row { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 760px) {
+  .topbar { gap: 10px; padding: 8px 12px; }
+  .brand { font-size: 13px; }
+  .topbar > div[style] { order: 4; width: 100%; }
+  .topbar > div[style] > div { width: 100% !important; }
+  .topbar nav button { font-size: 9px; padding: 0 4px; }
+  .cmd-k-trigger { display: none !important; }
+  .terminal-ticker-ribbon { position: sticky; top: 0; }
+  .terminal-sub-toolbar { align-items: flex-start; }
+  .desk-tab-btn { padding: 7px 8px; font-size: 9px; }
+  .workbench { display: flex; flex-direction: column; min-height: 0; }
+  .filter-rail, .inspector { max-height: none; border: 0; border-bottom: 1px solid var(--ui-border); }
+  .graph-shell { min-height: 580px; }
+  .commandbar { height: auto; padding: 12px; align-items: flex-start; flex-direction: column; }
+  .command-actions { width: 100%; }
+  .casebar { overflow-x: auto; padding: 8px 12px; height: auto; }
+  .trading-desk-grid, .risk-desk-grid, .news-desk-grid { padding: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}

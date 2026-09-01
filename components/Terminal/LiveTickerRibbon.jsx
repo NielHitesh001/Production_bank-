@@ -33,7 +33,7 @@ export default function LiveTickerRibbon({ onSelectSymbol }) {
     <div className="terminal-ticker-ribbon">
       <div className="ticker-ribbon-badge">
         <span className="live-pulse-dot" />
-        <b>BLOOMBERG FEED</b>
+        <b>MARKET DATA</b>
       </div>
 
       <div className="ticker-marquee-track">

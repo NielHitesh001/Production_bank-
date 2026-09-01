@@ -88,7 +88,7 @@ export default function OrderTicket({ onExecuteOrder, accountBalance = 1000000 }
 
     setExecutionMessage({
       status: "FILLED",
-      text: `✔ ${receipt.venue || "BROKER"} FILLED: ${side} ${units.toLocaleString()} ${symbol} @ ${receipt.executionPrice.toFixed(currentTick.decimals || 4)} (Notional: $${(amountUsd / 1000).toFixed(0)}k @ ${leverage}x)`,
+      text: `✓ PAPER ACCEPTED: ${side} ${units.toLocaleString()} ${symbol} @ ${receipt.executionPrice.toFixed(currentTick.decimals || 4)} (Notional: $${(amountUsd / 1000).toFixed(0)}k @ ${leverage}x)`,
     });
 
     setTimeout(() => setExecutionMessage(null), 5000);
@@ -100,8 +100,8 @@ export default function OrderTicket({ onExecuteOrder, accountBalance = 1000000 }
     <div className="terminal-order-ticket">
       <div className="ticket-header">
         <div className="ticket-title-group">
-          <span className="eyebrow">OMS ORDER EXECUTION DESK</span>
-          <h3>Institutional Order Ticket</h3>
+          <span className="eyebrow">PAPER-ONLY ORDER REVIEW</span>
+          <h3>Simulated Order Ticket</h3>
         </div>
         <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
           <button
@@ -110,10 +110,10 @@ export default function OrderTicket({ onExecuteOrder, accountBalance = 1000000 }
             onClick={handleToggleKillSwitch}
             title="Emergency trading kill switch"
           >
-            {guardrailStatus.paused ? "🛑 HALTED" : "⚡ LIVE GUARDRAILS"}
+            {guardrailStatus.paused ? "🛑 PAPER HALTED" : "⚡ RISK GUARDRAILS"}
           </button>
           <div className="ticket-badge">
-            <span>● {brokerVenue === "alpaca_paper" ? "ALPACA PAPER" : "INTERNAL SIM"}</span>
+            <span>● {brokerVenue === "alpaca_paper" ? "PAPER SANDBOX" : "INTERNAL SIM"}</span>
           </div>
         </div>
       </div>
@@ -122,9 +122,9 @@ export default function OrderTicket({ onExecuteOrder, accountBalance = 1000000 }
         {/* Destination Venue & Instrument Row */}
         <div className="form-grid-2">
           <div className="form-row">
-            <label>EXECUTION VENUE</label>
+            <label>SIMULATION VENUE</label>
             <select value={brokerVenue} onChange={(e) => setBrokerVenue(e.target.value)}>
-              <option value="alpaca_paper">Alpaca Paper REST API</option>
+              <option value="alpaca_paper">Paper Sandbox</option>
               <option value="internal_sim">Internal Simulator</option>
             </select>
           </div>
@@ -257,7 +257,7 @@ export default function OrderTicket({ onExecuteOrder, accountBalance = 1000000 }
           type="submit"
           className={`execute-order-btn ${side.toLowerCase()}`}
         >
-          EXECUTE {side} {symbol} (${(amountUsd / 1000).toFixed(0)}k @ {leverage}x)
+          SUBMIT PAPER {side} {symbol} (${(amountUsd / 1000).toFixed(0)}k @ {leverage}x)
         </button>
 
         {executionMessage && (
