@@ -23,12 +23,7 @@ const MODE_DELAYS_MS = Object.freeze({
   simulated: null,
 });
 
-const WS_ENDPOINTS = Object.freeze({
-  Equities: "wss://socket.polygon.io/stocks",
-  FX: "wss://socket.polygon.io/forex",
-  Crypto: "wss://socket.polygon.io/crypto",
-  Options: "wss://socket.polygon.io/options",
-});
+const POLYGON_REST_BASE_URL = "https://api.polygon.io";
 
 function toEpoch(value) {
   const epoch = typeof value === "number" ? value : Date.parse(value || "");
@@ -108,17 +103,31 @@ export function normalizePolygonMessage(message, { assetClass = "Equities", decl
 }
 
 /**
- * Server-side Polygon WebSocket connector. It is deliberately inert without
- * an API key and provides status events for unavailable/degraded UI states.
+ * Server-side Polygon REST poller. It deliberately serializes requests and
+ * defaults to five calls per minute so a free-plan integration cannot burst
+ * past its declared allowance. WebSockets are intentionally not used here.
  */
 export class PolygonMarketDataAdapter {
-  constructor({ apiKey, declaredMode = "delayed", WebSocketImpl = globalThis.WebSocket, now = () => Date.now() } = {}) {
+  constructor({
+    apiKey,
+    declaredMode = "delayed",
+    maxCallsPerMinute = 5,
+    baseUrl = POLYGON_REST_BASE_URL,
+    fetchImpl = globalThis.fetch,
+    now = () => Date.now(),
+  } = {}) {
     this.apiKey = apiKey;
     this.declaredMode = declaredMode;
-    this.WebSocketImpl = WebSocketImpl;
+    this.maxCallsPerMinute = maxCallsPerMinute;
+    this.baseUrl = baseUrl.replace(/\/$/, "");
+    this.fetchImpl = fetchImpl;
     this.now = now;
-    this.socket = null;
     this.listeners = new Set();
+    this.watchlist = [];
+    this.cursor = 0;
+    this.pollTimer = null;
+    this.pollInFlight = false;
+    this.lastRequestAt = 0;
     this.status = { provider: "polygon.io", state: MARKET_DATA_STATES.UNAVAILABLE, reason: "not_connected", declaredMode };
   }
 
@@ -138,34 +147,93 @@ export class PolygonMarketDataAdapter {
     return this.status;
   }
 
-  connect({ assetClass = "Equities", symbols = [] } = {}) {
-    if (!this.apiKey) return this.setStatus(MARKET_DATA_STATES.UNAVAILABLE, "polygon_api_key_not_configured");
-    if (!this.WebSocketImpl) return this.setStatus(MARKET_DATA_STATES.UNAVAILABLE, "websocket_runtime_unavailable");
-    const endpoint = WS_ENDPOINTS[assetClass];
-    if (!endpoint) return this.setStatus(MARKET_DATA_STATES.UNAVAILABLE, "asset_class_not_supported_by_polygon_adapter");
+  setWatchlist(instruments) {
+    const seen = new Set();
+    this.watchlist = instruments.filter((instrument) => {
+      const key = `${instrument.assetClass}:${instrument.symbol}`;
+      if (!instrument.symbol || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+    this.cursor = 0;
+    return this.watchlist;
+  }
 
-    this.socket = new this.WebSocketImpl(endpoint);
-    this.socket.addEventListener("open", () => {
-      this.socket.send(JSON.stringify({ action: "auth", params: this.apiKey }));
-      const prefix = assetClass === "FX" ? "CA" : assetClass === "Crypto" ? "XA" : "A";
-      if (symbols.length) this.socket.send(JSON.stringify({ action: "subscribe", params: symbols.map((symbol) => `${prefix}.${symbol}`).join(",") }));
-      this.setStatus(this.declaredMode === "live" ? MARKET_DATA_STATES.LIVE : MARKET_DATA_STATES.DELAYED, "connected");
+  get pollingIntervalMs() {
+    return Math.ceil(60_000 / Math.max(1, this.maxCallsPerMinute));
+  }
+
+  nextInstrument() {
+    if (!this.watchlist.length) return null;
+    const instrument = this.watchlist[this.cursor % this.watchlist.length];
+    this.cursor = (this.cursor + 1) % this.watchlist.length;
+    return instrument;
+  }
+
+  buildAggregateUrl({ symbol, assetClass = "Equities" }) {
+    const polygonSymbol = assetClass === "FX" ? `C:${symbol.replace("/", "")}` : assetClass === "Crypto" ? `X:${symbol.replace("/", "-")}` : symbol;
+    const today = new Date(this.now()).toISOString().slice(0, 10);
+    return `${this.baseUrl}/v2/aggs/ticker/${encodeURIComponent(polygonSymbol)}/range/1/minute/${today}/${today}?adjusted=true&sort=desc&limit=1&apiKey=${encodeURIComponent(this.apiKey)}`;
+  }
+
+  normalizeAggregateResponse(payload, instrument) {
+    const aggregate = payload?.results?.[0];
+    if (!aggregate) return null;
+    return normalizePolygonMessage({
+      ev: "A",
+      sym: instrument.symbol,
+      o: aggregate.o,
+      h: aggregate.h,
+      l: aggregate.l,
+      c: aggregate.c,
+      v: aggregate.v,
+      e: aggregate.t,
+    }, {
+      assetClass: instrument.assetClass,
+      declaredMode: this.declaredMode,
+      receivedAt: new Date(this.now()).toISOString(),
+      now: this.now(),
     });
-    this.socket.addEventListener("message", (event) => {
-      const messages = JSON.parse(event.data);
-      for (const message of Array.isArray(messages) ? messages : [messages]) {
-        if (!message?.ev || message.ev === "status") continue;
-        this.emit({ type: "tick", tick: normalizePolygonMessage(message, { assetClass, declaredMode: this.declaredMode, now: this.now() }) });
-      }
-    });
-    this.socket.addEventListener("error", () => this.setStatus(MARKET_DATA_STATES.DEGRADED, "socket_error"));
-    this.socket.addEventListener("close", () => this.setStatus(MARKET_DATA_STATES.UNAVAILABLE, "socket_closed"));
+  }
+
+  async pollNext() {
+    if (!this.apiKey) return this.setStatus(MARKET_DATA_STATES.UNAVAILABLE, "polygon_api_key_not_configured");
+    if (!this.fetchImpl) return this.setStatus(MARKET_DATA_STATES.UNAVAILABLE, "fetch_runtime_unavailable");
+    const instrument = this.nextInstrument();
+    if (!instrument) return this.setStatus(MARKET_DATA_STATES.UNAVAILABLE, "watchlist_empty");
+    if (this.pollInFlight) return this.status;
+    this.pollInFlight = true;
+
+    try {
+      const response = await this.fetchImpl(this.buildAggregateUrl(instrument));
+      if (!response.ok) return this.setStatus(MARKET_DATA_STATES.DEGRADED, `polygon_http_${response.status}`);
+      const tick = this.normalizeAggregateResponse(await response.json(), instrument);
+      if (!tick) return this.setStatus(MARKET_DATA_STATES.DEGRADED, "polygon_empty_aggregate_response");
+      this.lastRequestAt = this.now();
+      this.setStatus(MARKET_DATA_STATES.DELAYED, "rest_poll_ok");
+      this.emit({ type: "tick", tick });
+      return tick;
+    } catch {
+      return this.setStatus(MARKET_DATA_STATES.DEGRADED, "polygon_rest_request_failed");
+    } finally {
+      this.pollInFlight = false;
+    }
+  }
+
+  startPolling() {
+    if (this.pollTimer) return this.status;
+    const poll = async () => {
+      await this.pollNext();
+      this.pollTimer = setTimeout(poll, this.pollingIntervalMs);
+      this.pollTimer.unref?.();
+    };
+    poll();
     return this.status;
   }
 
-  disconnect() {
-    this.socket?.close();
-    this.socket = null;
-    return this.setStatus(MARKET_DATA_STATES.UNAVAILABLE, "disconnected_by_operator");
+  stopPolling() {
+    if (this.pollTimer) clearTimeout(this.pollTimer);
+    this.pollTimer = null;
+    return this.setStatus(MARKET_DATA_STATES.UNAVAILABLE, "polling_stopped_by_operator");
   }
 }
