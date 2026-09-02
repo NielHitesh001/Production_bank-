@@ -56,3 +56,18 @@ test("Polygon REST poller queues round-robin delayed aggregate reads", async () 
   assert.match(requestedUrls[0], /SPY/);
   assert.match(requestedUrls[1], /X%3ABTC-USD/);
 });
+
+test("Polygon REST snapshot reports last known data with refresh scheduling metadata", async () => {
+  const now = Date.parse("2026-09-02T10:00:00.000Z");
+  const adapter = new PolygonMarketDataAdapter({
+    apiKey: "test-key",
+    now: () => now,
+    fetchImpl: async () => ({ ok: true, json: async () => ({ results: [{ o: 100, h: 102, l: 99, c: 101, v: 10, t: now - 1_000 }] }) }),
+  });
+  adapter.setWatchlist([{ assetClass: "Equities", symbol: "SPY" }]);
+  await adapter.pollNext();
+  const [ticker] = adapter.getSnapshot(now + 4_000);
+  assert.equal(ticker.symbol, "SPY");
+  assert.equal(ticker.freshness.state, MARKET_DATA_STATES.DELAYED);
+  assert.equal(ticker.nextRefreshInMs, 8_000);
+});

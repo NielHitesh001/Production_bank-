@@ -124,6 +124,7 @@ export class PolygonMarketDataAdapter {
     this.now = now;
     this.listeners = new Set();
     this.watchlist = [];
+    this.cache = new Map();
     this.cursor = 0;
     this.pollTimer = null;
     this.pollInFlight = false;
@@ -170,6 +171,33 @@ export class PolygonMarketDataAdapter {
     return instrument;
   }
 
+  getPollingStatus(now = this.now()) {
+    const elapsedMs = this.lastRequestAt ? Math.max(0, now - this.lastRequestAt) : 0;
+    const nextRefreshInMs = this.lastRequestAt ? Math.max(0, this.pollingIntervalMs - elapsedMs) : 0;
+    return {
+      ...this.status,
+      pollingIntervalMs: this.pollingIntervalMs,
+      nextRefreshInMs,
+      watchedTickerCount: this.watchlist.length,
+      cachedTickerCount: this.cache.size,
+      lastRequestAt: this.lastRequestAt ? new Date(this.lastRequestAt).toISOString() : null,
+    };
+  }
+
+  getSnapshot(now = this.now()) {
+    return this.watchlist.map((instrument) => {
+      const cached = this.cache.get(instrument.symbol);
+      const freshness = cached
+        ? evaluateMarketFreshness({ eventAt: cached.eventAt, receivedAt: cached.receivedAt, declaredMode: this.declaredMode, now })
+        : { state: MARKET_DATA_STATES.UNAVAILABLE, sourceAgeMs: null, transportAgeMs: null, declaredDelayMs: MODE_DELAYS_MS[this.declaredMode] ?? null, eligibleForRealtime: false };
+      return {
+        ...(cached || { symbol: instrument.symbol, name: instrument.symbol, assetClass: instrument.assetClass, provider: "polygon.io", source: "polygon.io", deliveryMode: this.declaredMode }),
+        freshness,
+        nextRefreshInMs: this.getPollingStatus(now).nextRefreshInMs,
+      };
+    });
+  }
+
   buildAggregateUrl({ symbol, assetClass = "Equities" }) {
     const polygonSymbol = assetClass === "FX" ? `C:${symbol.replace("/", "")}` : assetClass === "Crypto" ? `X:${symbol.replace("/", "-")}` : symbol;
     const today = new Date(this.now()).toISOString().slice(0, 10);
@@ -210,6 +238,7 @@ export class PolygonMarketDataAdapter {
       const tick = this.normalizeAggregateResponse(await response.json(), instrument);
       if (!tick) return this.setStatus(MARKET_DATA_STATES.DEGRADED, "polygon_empty_aggregate_response");
       this.lastRequestAt = this.now();
+      this.cache.set(tick.symbol, tick);
       this.setStatus(MARKET_DATA_STATES.DELAYED, "rest_poll_ok");
       this.emit({ type: "tick", tick });
       return tick;

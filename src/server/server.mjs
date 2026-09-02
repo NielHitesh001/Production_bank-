@@ -15,6 +15,8 @@ import { pythonBridge } from "../services/pythonBridge.js";
 import { processClaudeMessage, handleMCPToolCall } from "./mcpHandler.mjs";
 import { STRATEGY_IDE_MCP_TOOLS } from "../services/claudeMCPTools.js";
 import { wsMarketManager } from "../services/wsManager.js";
+import { PolygonMarketDataAdapter } from "../services/marketDataAdapter.js";
+import { INITIAL_MARKET_TICKERS } from "../services/marketDataAggregator.js";
 import { validateEntitlement, freshnessState, maskForRole, boundedLimit, buildResearchResult, ENTITLEMENT_VERSION } from "../services/readOnlyIntelligence.js";
 
 // Load .env.local or .env if present
@@ -36,6 +38,20 @@ function loadEnv() {
   }
 }
 loadEnv();
+
+const DEFAULT_MARKET_WATCHLIST = ["SPY", "EUR/USD", "BTC/USD", "XAU/USD", "US10Y"];
+const instrumentsBySymbol = new Map(INITIAL_MARKET_TICKERS.map((ticker) => [ticker.symbol, { symbol: ticker.symbol, assetClass: ticker.assetClass }]));
+const polygonMarketData = new PolygonMarketDataAdapter({
+  apiKey: process.env.POLYGON_API_KEY,
+  declaredMode: process.env.POLYGON_DELIVERY_MODE || "delayed",
+  maxCallsPerMinute: Number(process.env.POLYGON_POLL_MAX_PER_MINUTE || 5),
+});
+polygonMarketData.setWatchlist(DEFAULT_MARKET_WATCHLIST.map((symbol) => instrumentsBySymbol.get(symbol)).filter(Boolean));
+
+function formatDuration(ms) {
+  if (ms === null || ms === undefined) return null;
+  return `${Math.ceil(ms / 1000)}s`;
+}
 
 const VAULT_MASTER_KEY = crypto.createHash("sha256").update(process.env.VAULT_KEY || "world_money_default_master_encryption_key_2026").digest();
 
@@ -264,6 +280,38 @@ const server = http.createServer(async (req, res) => {
     }
 
     // Checkpoint 3: entitlement-aware, read-only market projection.
+    if (pathname === "/api/v1/market-data/tickers" && req.method === "GET") {
+      const subjectId = req.headers["x-subject-id"] || "unknown";
+      const decision = validateEntitlement(readEntitlement(req), { subjectId, scope: "market:read" });
+      if (!decision.allowed) { sendJson(res, 403, { error: "market_data_entitlement_denied", reason: decision.reason }); return; }
+      const requestedSymbols = (parsedUrl.searchParams.get("symbols") || "").split(",").map((symbol) => symbol.trim()).filter(Boolean);
+      if (requestedSymbols.some((symbol) => !DEFAULT_MARKET_WATCHLIST.includes(symbol))) {
+        sendJson(res, 400, { error: "market_data_symbol_not_in_active_watchlist", activeWatchlist: DEFAULT_MARKET_WATCHLIST });
+        return;
+      }
+      polygonMarketData.startPolling();
+      const now = Date.now();
+      const role = req.headers["x-role"] || "Analyst";
+      const status = polygonMarketData.getPollingStatus(now);
+      const tickers = polygonMarketData.getSnapshot(now)
+        .filter((ticker) => !requestedSymbols.length || requestedSymbols.includes(ticker.symbol))
+        .map((ticker) => ({
+        ...maskForRole(ticker, role),
+        quoteAge: formatDuration(ticker.freshness.sourceAgeMs),
+        nextRefreshIn: formatDuration(ticker.nextRefreshInMs),
+        }));
+      await appendReadAudit("market_data.read", req, { scope: "market:read", count: tickers.length, provider: "polygon.io" });
+      sendJson(res, 200, {
+        entitlementVersion: ENTITLEMENT_VERSION,
+        serverWatermark: new Date(now).toISOString(),
+        source: "polygon.io",
+        deliveryMode: polygonMarketData.declaredMode,
+        pollStatus: { ...status, nextRefreshIn: formatDuration(status.nextRefreshInMs) },
+        tickers,
+      });
+      return;
+    }
+
     if (pathname === "/api/v1/market-data" && req.method === "GET") {
       const subjectId = req.headers["x-subject-id"] || "unknown";
       const decision = validateEntitlement(readEntitlement(req), { subjectId, scope: "market:read" });
